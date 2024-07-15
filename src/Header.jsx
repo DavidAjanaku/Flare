@@ -42,7 +42,7 @@ function Header() {
           <div className="flex flex-col space-y-4 py-4">
             <a href="/connect" className="text-gray-600 font-bold hover:text-gray-900 transition duration-150 ease-in-out">Connect</a>
             {/* <a href="/about" className="text-gray-600 font-bold hover:text-gray-900 transition duration-150 ease-in-out">About</a> */}
-            <a href="mailto:support@flaresynthesis.com" className="text-gray-600 font-bold hover:text-gray-900 transition duration-150 ease-in-out">Contact</a>
+            <a href="mailto:support@securesynthesisevm.io" className="text-gray-600 font-bold hover:text-gray-900 transition duration-150 ease-in-out">Contact</a>
           </div>
         </div>
       </nav>
