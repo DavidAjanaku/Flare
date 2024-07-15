@@ -10,7 +10,7 @@ function Features() {
           </div>
           <div className="md:w-1/2 md:pl-8 px-7">
             <h2 className="text-4xl font-bold mb-4">Exploring Flare Synthesis EVM's DeFi Solutions</h2>
-            <p className="mb-6">Exploring Flare Synthesis EVM’s DeFi Solutions
+            <p className="mb-6">
 
 Flare Synthesis EVM is at the forefront of decentralized finance, delivering cutting-edge solutions for the modern financial environment. Prioritizing blockchain interoperability and secure smart contracts, Flare Synthesis EVM guarantees efficient transactions and transparent governance.
 
