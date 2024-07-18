@@ -67,3 +67,8 @@
     }
   }
   
+  .custom{
+
+    overflow-wrap: anywhere;
+
+  }

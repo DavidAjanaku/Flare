@@ -18,3 +18,8 @@
     animation: ellipsis 1s infinite steps(3, end);
   }
   
+  .custom{
+
+    overflow-wrap: anywhere;
+
+  }

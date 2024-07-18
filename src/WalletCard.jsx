@@ -13,7 +13,7 @@ function WalletCard({ wallet, onClick }) {
       />
       <div>
         <h3 className="text-lg font-semibold text-gray-800 mb-1">{wallet.name}</h3>
-        <p className="text-sm text-gray-500">{wallet.url}</p>
+        <p className="text-sm text-gray-500 custom">{wallet.url}</p>
       </div>
     </div>
   );
